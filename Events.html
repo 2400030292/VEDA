@@ -1,0 +1,469 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Events - KL IRD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#e31e24",
+                      "primary-fixed-dim": "#ffb4ab",
+                      "on-primary-container": "#fffafa",
+                      "tertiary-fixed": "#e2e2e2",
+                      "surface-container-low": "#f3f4f5",
+                      "on-primary-fixed": "#410002",
+                      "inverse-primary": "#ffb4ab",
+                      "on-secondary-container": "#294f83",
+                      "error-container": "#ffdad6",
+                      "background": "#f8f9fa",
+                      "tertiary": "#5b5b5b",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#93000d",
+                      "on-surface-variant": "#5d3f3c",
+                      "secondary-container": "#9fc2fe",
+                      "on-secondary-fixed-variant": "#1f477b",
+                      "on-background": "#191c1d",
+                      "on-tertiary-container": "#fcfcfc",
+                      "secondary-fixed-dim": "#a7c8ff",
+                      "inverse-on-surface": "#f0f1f2",
+                      "surface-bright": "#f8f9fa",
+                      "outline-variant": "#e7bdb8",
+                      "tertiary-container": "#747474",
+                      "secondary": "#3a5f94",
+                      "inverse-surface": "#2e3132",
+                      "surface-variant": "#e1e3e4",
+                      "surface-container-high": "#e7e8e9",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "secondary-fixed": "#d5e3ff",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "primary": "#ba0013",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-surface": "#191c1d",
+                      "outline": "#926f6b",
+                      "surface-dim": "#d9dadb",
+                      "surface-container": "#edeeef",
+                      "primary-fixed": "#ffdad6",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#e1e3e4",
+                      "surface-tint": "#c00014",
+                      "surface": "#f8f9fa",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed": "#001b3c",
+                      "tertiary-fixed-dim": "#c6c6c6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "unit": "8px",
+                      "margin-mobile": "20px",
+                      "gutter": "24px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .circuit-pattern {
+            background-color: #f8f9fa;
+            background-image: radial-gradient(#e1e3e4 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+        }
+        .img-hover-zoom:hover img {
+            transform: scale(1.05);
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px) rotateX(10deg);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden" style="cursor: auto;">
+<!-- TopNavBar -->
+<header class="bg-surface shadow-sm sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">biotech</span>
+                KL IRD
+            </div>
+<nav class="hidden md:flex gap-8">
+<a class="text-secondary hover:text-primary transition-colors font-label-md text-label-md cursor-element" href="#">Home</a>
+<a class="text-primary border-b-2 border-primary font-bold pb-1 font-label-md text-label-md cursor-element" href="#">Events</a>
+<a class="text-secondary hover:text-primary transition-colors font-label-md text-label-md cursor-element" href="#">Team</a>
+<a class="text-secondary hover:text-primary transition-colors font-label-md text-label-md cursor-element" href="#">Attendance</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex bg-primary text-on-primary px-6 py-2 rounded-DEFAULT font-label-md text-label-md hover:bg-primary-container transition-colors items-center gap-2 cursor-element">
+                    Sign In
+                </button>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-outline-variant cursor-element">
+<img alt="University Profile Avatar" class="w-full h-full object-cover" data-alt="A clean, minimalist university profile avatar showing a stylized outline of a student against a light grey background. High-key lighting, corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyxX0ITwpQ-gs34G4ypy20F-cfQu3Urjf9Fr_W1XMYiCHvPA_dBYMI4YtdyGyjEilMERL8ecCT4bFfzNxdF_lpswg3popnWYRE33ZND9dk7ScMlURwI44CKUNDhAMc6RenjaCk2M_cLV9t0fgKpJv8x9dF8f6isfeDu6lu9K-h1gEQcIpuXRJXzmcOJAV6UEeDEQfZeI3riuiGFrIVme7mF6V6RX7kGeQhbojA9QRUtzfNyJr1UIDH">
+</div>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative w-full px-margin-mobile md:px-margin-desktop py-24 circuit-pattern flex flex-col items-center justify-center text-center overflow-hidden border-b border-surface-variant">
+<div class="max-w-4xl z-10 reveal active">
+<div class="inline-block bg-primary-container text-on-primary-container px-4 py-1 rounded-full font-label-sm text-label-sm mb-6 tracking-widest uppercase shadow-sm">
+                    Discover What's Next
+                </div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-background mb-6">EVENTS &amp; EXPERIENCES</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-2xl mx-auto">
+                    Discover hackathons, workshops, challenges, sessions and innovation experiences by KL IRD.
+                </p>
+</div>
+</section>
+<!-- Filters -->
+<section class="sticky top-[72px] z-40 bg-surface/90 backdrop-blur-md border-b border-surface-variant py-4">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex overflow-x-auto gap-2 md:gap-4 no-scrollbar">
+<button class="px-4 py-2 bg-inverse-surface text-inverse-on-surface rounded-full font-label-md text-label-md whitespace-nowrap cursor-element">ALL</button>
+<button class="px-4 py-2 text-secondary hover:bg-surface-container rounded-full font-label-md text-label-md whitespace-nowrap transition-colors cursor-element">TECHNICAL</button>
+<button class="px-4 py-2 text-secondary hover:bg-surface-container rounded-full font-label-md text-label-md whitespace-nowrap transition-colors cursor-element">NON-TECHNICAL</button>
+<button class="px-4 py-2 text-secondary hover:bg-surface-container rounded-full font-label-md text-label-md whitespace-nowrap transition-colors flex items-center gap-2 cursor-element">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span> LIVE NOW
+                </button>
+<button class="px-4 py-2 text-secondary hover:bg-surface-container rounded-full font-label-md text-label-md whitespace-nowrap transition-colors cursor-element">UPCOMING</button>
+<button class="px-4 py-2 text-secondary hover:bg-surface-container rounded-full font-label-md text-label-md whitespace-nowrap transition-colors cursor-element">PAST</button>
+</div>
+</section>
+<!-- Content Container -->
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-16 space-y-24">
+<!-- Live Now -->
+<section class="reveal active">
+<div class="flex items-center gap-4 mb-8 border-b border-surface-variant pb-4">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary-container"></span>
+</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">LIVE NOW</h2>
+</div>
+<div class="bg-surface-container-lowest border border-dashed border-outline-variant rounded-xl p-12 text-center flex flex-col items-center justify-center min-h-[200px]">
+<span class="material-symbols-outlined text-4xl text-tertiary mb-4">event_busy</span>
+<p class="font-body-lg text-body-lg text-tertiary">No events are live right now.</p>
+</div>
+</section>
+<!-- Upcoming -->
+<section class="reveal delay-100 active">
+<div class="flex items-center gap-4 mb-8 border-b border-surface-variant pb-4">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">UPCOMING EVENTS</h2>
+</div>
+<div class="bg-surface-container-lowest border border-dashed border-outline-variant rounded-xl p-12 text-center flex flex-col items-center justify-center min-h-[200px]">
+<span class="material-symbols-outlined text-4xl text-tertiary mb-4">calendar_clock</span>
+<p class="font-body-lg text-body-lg text-tertiary">New events are coming soon. Check back here for the latest KL IRD experiences.</p>
+</div>
+</section>
+<!-- Past Events -->
+<section class="reveal delay-200 active">
+<div class="flex items-center gap-4 mb-8 border-b border-surface-variant pb-4">
+<span class="w-3 h-3 rounded-full bg-tertiary"></span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background">PAST EVENTS</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Event 1 -->
+<article class="bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden img-hover-zoom card-hover transition-all duration-300 flex flex-col group cursor-element reveal active">
+<div class="aspect-[16/9] w-full bg-surface-container overflow-hidden relative">
+<div class="absolute top-4 left-4 z-10 bg-surface/90 backdrop-blur text-secondary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase">Technical</div>
+<img alt="Innovation Pitch Arena" class="w-full h-full object-cover transition-transform duration-500" data-alt="A modern, high-contrast photo of an innovation pitch competition stage. Students presenting technical ideas under bright spotlighting. Deep navy background with vibrant red accent lighting. High-end corporate event aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY5CygTMrnOLzeZR5lNJegspdBjzZAGffkDhuQgiwUCX65njyo9R7UqPxwC1ejzGTyzzR7l9o4P-PSplP6r_6V3FuqjmE8SEdfWGDFf2Il91GfhdPGY_m5ei9Bnnv3weGRus7q2mPCY1wh0ThdjhVS-KqENWI8gHvV7_bGgQAHBM6WH4OqISDS1vsQ5wPyRX_9i3hwcyuaY6zv-Q87IU8WJUvoSZnSbqrTQCX9woyLw0QWZg3N9W5P">
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">Innovation Pitch Arena</h3>
+<div class="flex items-center gap-4 text-tertiary font-body-md text-body-md mb-6 mt-auto pt-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Oct 12, 2023</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 10:00 AM</div>
+</div>
+<div class="flex items-center justify-between border-t border-surface-variant pt-4">
+<span class="bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm text-tertiary uppercase">Past</span>
+<button class="inline-flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md transition-all duration-300 hover:bg-primary-container hover:shadow-lg group/btn">
+  <span class="">View Details</span>
+  <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Event 2 -->
+<article class="bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden img-hover-zoom card-hover transition-all duration-300 flex flex-col group cursor-element reveal delay-100 active">
+<div class="aspect-[16/9] w-full bg-surface-container overflow-hidden relative">
+<div class="absolute top-4 left-4 z-10 bg-surface/90 backdrop-blur text-secondary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase">Non-Technical</div>
+<img alt="Memo War Live" class="w-full h-full object-cover transition-transform duration-500" data-alt="A high-energy, modern photograph of a live debate or 'memo war' style competition in a university setting. Clean white room with deep navy and red branding elements. Students actively engaging, corporate academic style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXumJ0-0arF9IlLTBXtTNu8dTrInvBBmMUbrPcN_NyGZFD1x9pb1RftFXGLOrSB0x94qfPNlqPU3sHTSpQatMfXx-1OchhZWFnc5OEy0Xi56kwDyUUjBYYyQIoaPW-qS7Hpy8SKLK_p_pU7xQpz4hFf0iHYH9SMnX8R020tJC_eC5gWSKawzfh5opvnz3IIKrvhuquvBuKyKsFIGnQjJoZaZL5ikY-hbwEiXKjaGatJyDugi7yWtcG">
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">Memo War Live</h3>
+<div class="flex items-center gap-4 text-tertiary font-body-md text-body-md mb-6 mt-auto pt-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Sep 28, 2023</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 02:00 PM</div>
+</div>
+<div class="flex items-center justify-between border-t border-surface-variant pt-4">
+<span class="bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm text-tertiary uppercase">Past</span>
+<button class="inline-flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md transition-all duration-300 hover:bg-primary-container hover:shadow-lg group/btn">
+  <span class="">View Details</span>
+  <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Event 3 -->
+<article class="bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden img-hover-zoom card-hover transition-all duration-300 flex flex-col group cursor-element reveal delay-200 active">
+<div class="aspect-[16/9] w-full bg-surface-container overflow-hidden relative">
+<div class="absolute top-4 left-4 z-10 bg-surface/90 backdrop-blur text-secondary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase">Technical</div>
+<img alt="Tech-Intellect" class="w-full h-full object-cover transition-transform duration-500" data-alt="A sleek, modern image of a hackathon environment. Students working intently on laptops in a high-tech lab. The lighting is bright but focused, with deep blue and white ambient tones. Clean, academic research aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxyN4pRM1fFGb-VuzTcsjr2ol_DFmFgB-EursYHyv9qdFW3yQ2ShEFWnxFO3gc6bCSn8TZyQoZU6i_v8TF9YfTu4iq8PsuybFYNssVzK-_A_H0M4PMPghAP394ESePx9KbZsfv3Jlk3hD8B2czjf_zWsGDatdTj1rw-BVIz2io5L--ak9KNlaRt9L8X5CdzmBeR0eII3usLEi--c9XFjlROWoE5sYaubTjKrci4BSA1s99LnLvqHLM">
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">Tech-Intellect</h3>
+<div class="flex items-center gap-4 text-tertiary font-body-md text-body-md mb-6 mt-auto pt-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Aug 15, 2023</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 09:00 AM</div>
+</div>
+<div class="flex items-center justify-between border-t border-surface-variant pt-4">
+<span class="bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm text-tertiary uppercase">Past</span>
+<button class="inline-flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md transition-all duration-300 hover:bg-primary-container hover:shadow-lg group/btn">
+  <span class="">View Details</span>
+  <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Event 4 -->
+<article class="bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden img-hover-zoom card-hover transition-all duration-300 flex flex-col group cursor-element reveal active">
+<div class="aspect-[16/9] w-full bg-surface-container overflow-hidden relative">
+<div class="absolute top-4 left-4 z-10 bg-surface/90 backdrop-blur text-secondary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase">Non-Technical</div>
+<img alt="Meme Creation Contest" class="w-full h-full object-cover transition-transform duration-500" data-alt="A creative, modern photograph of a university event focusing on digital media creation. Clean, well-lit studio space with students collaborating around digital displays. High contrast with deep blacks and stark whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5VbHG-HnoSYugpivagZGO6dWPIlq6yp0EpUyWsdT97PT-JKHYAWoLQB7w0QPHi25Uzz5hWgj2r2G37mI_3A5rFZPijlWirUd-XkvsWhpXRK4qzD9wtcG-iMr0aTyVK2VRkER_i3BZUWayktcaTt4CvtzHbCNmnL4_Jgd8keFapV8QkwmwqLdo1VBsx_CtPv7SJQM2reHTTmHAqAjp3KG0MrHfa07zUZCkbj5VIXNAZyIJsLR8yD8t">
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">Meme Creation Contest</h3>
+<div class="flex items-center gap-4 text-tertiary font-body-md text-body-md mb-6 mt-auto pt-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Jul 05, 2023</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 04:00 PM</div>
+</div>
+<div class="flex items-center justify-between border-t border-surface-variant pt-4">
+<span class="bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm text-tertiary uppercase">Past</span>
+<button class="inline-flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md transition-all duration-300 hover:bg-primary-container hover:shadow-lg group/btn">
+  <span class="">View Details</span>
+  <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Event 5 -->
+<article class="bg-surface-container-lowest border border-surface-variant rounded-xl overflow-hidden img-hover-zoom card-hover transition-all duration-300 flex flex-col group cursor-element reveal delay-100 active">
+<div class="aspect-[16/9] w-full bg-surface-container overflow-hidden relative">
+<div class="absolute top-4 left-4 z-10 bg-surface/90 backdrop-blur text-secondary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase">Technical</div>
+<img alt="Prompt Engineering Showdown" class="w-full h-full object-cover transition-transform duration-500" data-alt="A futuristic, high-tech image representing prompt engineering and AI. Glowing code interfaces on sleek screens in a modern, dark-themed lab environment with subtle red and blue neon accents. Corporate technical style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTr_1NaUu4QAGnvnHr4cyil8EkWxTjyWEtDaXb1LVOera0bXJWZKJWlfH3mnp-U8JhOl3DpySc2re-PIpE1G1UL74cXannPi1f6aTfLWtpMCPhfnL-J_4UVQKV1OK3F3-P_Ofld4241fLnLFtnzNmkqtskuuqkoMi1LoEYN6q74nEXSl9ax9f5HR77jh_7xceo5QwbTpYtXbHu2dRIGmmzbnNDqz9iKWAxiRxWWx2hDqNreEHX1Q8m">
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">Prompt Engineering Showdown</h3>
+<div class="flex items-center gap-4 text-tertiary font-body-md text-body-md mb-6 mt-auto pt-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Jun 20, 2023</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">schedule</span> 11:00 AM</div>
+</div>
+<div class="flex items-center justify-between border-t border-surface-variant pt-4">
+<span class="bg-surface-container px-3 py-1 rounded-full font-label-sm text-label-sm text-tertiary uppercase">Past</span>
+<button class="inline-flex items-center gap-2 bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md transition-all duration-300 hover:bg-primary-container hover:shadow-lg group/btn">
+  <span class="">View Details</span>
+  <span class="material-symbols-outlined text-sm transition-transform duration-300 group-hover/btn:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-inverse-surface border-t border-outline-variant w-full py-12 px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter text-inverse-on-surface">
+<div class="font-headline-md text-headline-md text-on-primary">
+            KL IRD
+        </div>
+<div class="flex flex-col md:flex-row gap-4 items-center">
+<a class="font-label-md text-label-md text-surface-variant hover:text-primary-fixed-dim hover:underline transition-all cursor-element" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-surface-variant hover:text-primary-fixed-dim hover:underline transition-all cursor-element" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-surface-variant hover:text-primary-fixed-dim hover:underline transition-all cursor-element" href="#">Institutional Repository</a>
+<a class="font-label-md text-label-md text-surface-variant hover:text-primary-fixed-dim hover:underline transition-all cursor-element" href="#">Contact Support</a>
+</div>
+<div class="font-label-sm text-label-sm text-surface-variant text-center md:text-right">
+            © 2024 KL University Innovation Research Division. All rights reserved.
+        </div>
+</footer>
+<div id="custom-cursor-arrow" class="fixed top-0 left-0 w-12 h-12 bg-primary/20 backdrop-blur-sm text-primary rounded-full pointer-events-none z-[100] transition-opacity duration-300 flex items-center justify-center shadow-lg border border-primary/30 opacity-0" style="transform: translate3d(904px, 2474px, 0px) translate(-50%, -50%);">
+    <span class="material-symbols-outlined text-headline-md">arrow_outward</span>
+</div>
+<script>
+        // Simple scroll reveal animation observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(el => observer.observe(el));
+            
+            // Custom Cursor Logic
+            const cursor = document.getElementById('custom-cursor-arrow');
+            const isHoverCapable = window.matchMedia('(hover: hover)').matches;
+
+            if (cursor && isHoverCapable) {
+                let mouseX = 0, mouseY = 0;
+                let cursorX = 0, cursorY = 0;
+                
+                document.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
+
+                const lerp = (start, end, factor) => start + (end - start) * factor;
+
+                const animateCursor = () => {
+                    cursorX = lerp(cursorX, mouseX, 0.15);
+                    cursorY = lerp(cursorY, mouseY, 0.15);
+                    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+                    requestAnimationFrame(animateCursor);
+                };
+                animateCursor();
+
+                const interactables = document.querySelectorAll('.cursor-element, button, a, img, .card-hover');
+                
+                interactables.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        document.body.style.cursor = 'none';
+                        cursor.classList.remove('opacity-0');
+                        cursor.classList.add('opacity-100');
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        document.body.style.cursor = 'auto';
+                        cursor.classList.remove('opacity-100');
+                        cursor.classList.add('opacity-0');
+                    });
+                });
+            }
+        });
+    </script>
+
+
+
+
+</body></html>

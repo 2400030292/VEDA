@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VEDA Team - KL IRD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "outline-variant": "#e7bdb8",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "inverse-on-surface": "#f0f1f2",
+                        "primary-fixed": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-fixed": "#410002",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "primary": "#ba0013",
+                        "secondary-container": "#9fc2fe",
+                        "primary-fixed-dim": "#ffb4ab",
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary-fixed": "#e2e2e2",
+                        "primary-container": "#e31e24",
+                        "tertiary": "#5b5b5b",
+                        "surface-variant": "#e1e3e4",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "on-secondary-fixed": "#001b3c",
+                        "outline": "#926f6b",
+                        "secondary-fixed-dim": "#a7c8ff",
+                        "secondary-fixed": "#d5e3ff",
+                        "surface-dim": "#d9dadb",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f8f9fa",
+                        "surface-tint": "#c00014",
+                        "on-secondary-fixed-variant": "#1f477b",
+                        "tertiary-container": "#747474",
+                        "on-surface": "#191c1d",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#0a1128", // Navy Blue tint
+                        "background": "#f8f9fa",
+                        "surface-container": "#edeeef",
+                        "on-primary-container": "#fffafa",
+                        "error-container": "#ffdad6",
+                        "on-background": "#191c1d",
+                        "secondary": "#0a1128", // Navy Blue
+                        "on-tertiary-container": "#fcfcfc",
+                        "inverse-primary": "#ffb4ab",
+                        "surface-bright": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed-variant": "#93000d",
+                        "on-secondary-container": "#294f83",
+                        "on-surface-variant": "#5d3f3c"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "margin-mobile": "20px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 17, 40, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .reveal-3d {
+            opacity: 0;
+            transform: rotateX(-10deg) rotateY(10deg) translateZ(-50px) translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        .reveal-3d.is-visible {
+            opacity: 1;
+            transform: rotateX(0) rotateY(0) translateZ(0) translateY(0);
+        }
+
+        .blur-reveal {
+            filter: blur(8px);
+            opacity: 0;
+            transition: all 0.6s ease-out;
+        }
+
+        .reveal-3d.is-visible .blur-reveal {
+            filter: blur(0);
+            opacity: 1;
+        }
+        
+        .odometer {
+            display: inline-block;
+            overflow: hidden;
+            height: 1.2em;
+            vertical-align: bottom;
+        }
+
+        .digit-container {
+            display: inline-flex;
+            flex-direction: column;
+            transition: transform 1.5s cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+
+        .digit {
+            height: 1.2em;
+            line-height: 1.2em;
+        }
+
+        .circuit-bg {
+            background-color: #0a1128;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(186, 0, 19, 0.15) 0%, transparent 50%),
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            background-position: center center;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden">
+<!-- Top Navigation -->
+<nav class="bg-surface-bright w-full top-0 sticky shadow-sm z-50 border-b border-surface-container-high">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="font-headline-lg text-headline-lg font-bold text-primary">KL IRD</div>
+<div class="hidden md:flex gap-6 items-center">
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface hover:text-primary transition-colors duration-200" href="#">Home</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface hover:text-primary transition-colors duration-200" href="#">Events</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-primary font-bold border-b-2 border-primary pb-1" href="#">Team</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface hover:text-primary transition-colors duration-200" href="#">Attendance</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface hover:text-primary transition-colors duration-200" href="#">Login</a>
+<button class="bg-primary text-on-primary px-4 py-2 rounded font-label-md text-label-md hover:bg-surface-tint transition-colors">Join Us</button>
+</div>
+</div>
+</nav>
+<!-- Header Section -->
+<header class="circuit-bg text-on-primary py-24 px-margin-mobile md:px-margin-desktop relative overflow-hidden">
+<div class="max-w-container-max mx-auto relative z-10 text-center">
+<h1 class="font-display-lg text-5xl md:text-6xl font-bold mb-6 reveal-3d">VEDA TEAM 2026-2027</h1>
+<p class="font-body-lg text-xl md:text-2xl text-tertiary-fixed-dim max-w-3xl mx-auto reveal-3d" style="transition-delay: 0.1s;">KL IRD — Integrated Research and Discovery</p>
+</div>
+</header>
+<!-- Main Content -->
+<main class="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Sticky Sub-Nav for Wings -->
+<div class="sticky top-20 bg-surface-bright/95 backdrop-blur-md z-40 py-4 mb-16 border-b border-surface-container-high flex flex-wrap gap-3 justify-center shadow-sm">
+<a class="px-4 py-2 rounded-full bg-surface hover:bg-surface-container-high text-secondary font-label-sm text-sm font-bold transition-all border border-surface-container" href="#zero-order">ZERO ORDER</a>
+<a class="px-4 py-2 rounded-full bg-surface hover:bg-surface-container-high text-secondary font-label-sm text-sm font-bold transition-all border border-surface-container" href="#academics">ACADEMICS</a>
+<a class="px-4 py-2 rounded-full bg-surface hover:bg-surface-container-high text-secondary font-label-sm text-sm font-bold transition-all border border-surface-container" href="#research">RESEARCH AND DISCOVERY</a>
+<a class="px-4 py-2 rounded-full bg-surface hover:bg-surface-container-high text-secondary font-label-sm text-sm font-bold transition-all border border-surface-container" href="#events">EVENT OPERATIONS AND PROTOCOL</a>
+<a class="px-4 py-2 rounded-full bg-surface hover:bg-surface-container-high text-secondary font-label-sm text-sm font-bold transition-all border border-surface-container" href="#technical">TECHNICAL</a>
+<a class="px-4 py-2 rounded-full bg-surface hover:bg-surface-container-high text-secondary font-label-sm text-sm font-bold transition-all border border-surface-container" href="#provision">PROVISION</a>
+<a class="px-4 py-2 rounded-full bg-surface hover:bg-surface-container-high text-secondary font-label-sm text-sm font-bold transition-all border border-surface-container" href="#pr">PR &amp; MEDIA</a>
+<a class="px-4 py-2 rounded-full bg-surface hover:bg-surface-container-high text-secondary font-label-sm text-sm font-bold transition-all border border-surface-container" href="#spokesperson">SPOKESPERSON</a>
+</div>
+<!-- Directory Grid -->
+<div class="space-y-24">
+<!-- ZERO ORDER -->
+<section class="scroll-mt-32" id="zero-order">
+<h2 class="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">stars</span>
+                    ZERO ORDER
+                </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Seelam Manish Ratan</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000030018"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal" style="transition-delay: 0.1s">Harshitha Reddy</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000030025"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal" style="transition-delay: 0.2s">MD Fareed Sohail</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000030026"></div>
+</div>
+</div>
+</section>
+<!-- ACADEMICS -->
+<section class="scroll-mt-32" id="academics">
+<h2 class="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+                    ACADEMICS
+                </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Muthinti Lakshman</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000030555"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Shiva Yadav</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000031776"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Ashu Kumar</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000032678"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Om Prakhar</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000032679"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Aditya Shrivastava</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000032677"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Mradul Dixit</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032680"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Kumar Priyanshu</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032676"></div>
+</div>
+</div>
+</section>
+<!-- RESEARCH AND DISCOVERY -->
+<section class="scroll-mt-32" id="research">
+<h2 class="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">science</span>
+                    RESEARCH AND DISCOVERY
+                </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">K Venkata Sanjeev</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2000030848"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Vukka Sai Nikhil</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032630"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">V.SSJ Karthikeya Acharyulu</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500010405"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Ganta Keerthi</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500010408"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Tadi Arshitha Vidya Reddy</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030641"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Devarasa Venkata Sahithya</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500000104"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">M E Sanjana Nakka</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030979"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Kondepudi Bindu Pravalika</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030942"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Boddu Yamini</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500080009"></div>
+</div>
+</div>
+</section>
+<!-- EVENT OPERATIONS AND PROTOCOL -->
+<section class="scroll-mt-32" id="events">
+<h2 class="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">event</span>
+                    EVENT OPERATIONS AND PROTOCOL
+                </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">N. Sai Kiran</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032142"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Shaik Masthan Vali</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032441"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Desam Lekhitha Reddy</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031021"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Kunapa Reddy Yamini</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030260"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Vejandla Hema Lalitha</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030118"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Y. Ganesh</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030600"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">M. Gopika Sindhu</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030819"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">B Harshitha</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031244"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">A. Lalitha Siva Priya</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030264"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Tiyyagura Vyshnavi</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031651"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Yadla Devna Bhamini</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500033252"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">K Hima Nandini</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500090246"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">G Navya Sahithi</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030138"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">P Naga Siva Sai Pavan</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032203"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Kollapudi Sai Nihar</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032400"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Bathina Snehitha</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031334"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">T. Madhu Venkat</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500040186"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Y. Lokesh</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032218"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Vyshnavi Mantrala</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032142"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Guripa Shrijani</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031737"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Manilapalli Divija</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032290"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">K. Vishal</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031754"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Perumalla Jahnavi</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400031382"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Chintalapati Sai Surya Mukesh Varma</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400030092"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Jahnavi</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030362"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Sadhwik Lankalapalli</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400031186"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">M. Ashok Chakravarthi</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400032666"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">K Komal Subash</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030860"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Viswanadharao Srinivasa Sathwik</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030158"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Chukka Aaron Zenithel</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500080073"></div>
+</div>
+</div>
+</section>
+<!-- TECHNICAL -->
+<section class="scroll-mt-32" id="technical">
+<h2 class="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">engineering</span>
+                    TECHNICAL
+                </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Puvarapu Venkata Satish</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030292"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Koyyagura Mahima</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031840"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Racharonda Hemalatha</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030211"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Sai Murali Ganesh Veeranki</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400000004"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">V. Sai Gowtham</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500040096"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">G Rajkamal</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030306"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Thondavan Jahnavi</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500010121"></div>
+</div>
+</div>
+</section>
+<!-- PROVISION -->
+<section class="scroll-mt-32" id="provision">
+<h2 class="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">inventory</span>
+                    PROVISION
+                </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Atif Hussain</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030637"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">B Moulika Ratna Mala</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030416"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Karumuri P R N S Rajeswararao</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500090068"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">M Sai Sathvik</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032267"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">P. Yoga Abhinav Sai</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500040382"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Mogili Prayag Reddy</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031192"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Likith</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032274"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">T. Meghana</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032399"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Harsha Vardhan</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030080"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Taluri Khyati Sharma</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400010055"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Mythreyi K N R</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400010059"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">B Mythili</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400010023"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Viswanadharao Srinivasa Sathwik</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030159"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Joka Saivani</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400040270"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Sujay Vegi</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400100017"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Vikas Nagendra Reddy Karri</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500090099"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Kandula Rameshkumar</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400031595"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Harsh Kumar</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400031598"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Karumuri P R N S Rajaswararao</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400090008"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Korada Sikar</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400031515"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Shaik Abdul Raheem</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2400032034"></div>
+</div>
+</div>
+</section>
+<!-- PR AND MEDIA -->
+<section class="scroll-mt-32" id="pr">
+<h2 class="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">campaign</span>
+                    PR &amp; MEDIA
+                </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Bommireddy Dhyaneswar</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031724"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">S. Bhargav Teja</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030791"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Korada Srikar</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500031515"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Charamsha Pujitha</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030213"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">P Lasya Sri</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500070017"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Thota Amrutha</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500080324"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Mohammed Soha Imran</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500080096"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">S. Yashaswini</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030074"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">K Goapalarao</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500032079"></div>
+</div>
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Mandavalli Poorna Chandra Guptha</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500030616"></div>
+</div>
+</div>
+</section>
+<!-- SPOKESPERSON -->
+<section class="scroll-mt-32" id="spokesperson">
+<h2 class="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">record_voice_over</span>
+                    SPOKESPERSON
+                </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<div class="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-secondary hover:-translate-y-1 transition-transform">
+<div class="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Annpureddy Sonny Cherubu Raj</div>
+<div class="font-label-md text-primary font-medium odometer-wrapper" data-val="2500040217"></div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low mt-auto py-20 px-margin-desktop border-t border-surface-container-high">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">KL IRD</div>
+<div class="col-span-3 flex justify-end gap-8 font-body-md text-body-md text-on-surface-variant">
+<a class="hover:text-primary transition-all" href="#">Quick Links</a>
+<a class="hover:text-primary transition-all" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-all" href="#">Contact</a>
+</div>
+<div class="col-span-1 md:col-span-4 mt-8 pt-8 border-t border-surface-container text-sm text-on-surface-variant">
+                © 2026 KL IRD. All rights reserved.
+            </div>
+</div>
+</footer>
+<script>
+        // Odometer Setup
+        function setupOdometer(el, value) {
+            el.innerHTML = '';
+            el.classList.add('odometer');
+            const valStr = value.toString();
+            
+            for (let i = 0; i < valStr.length; i++) {
+                const targetDigit = parseInt(valStr[i]);
+                const wrapper = document.createElement('span');
+                wrapper.className = 'digit-container inline-flex flex-col';
+                
+                // Create a column of digits ending with the target
+                let digitsHtml = '';
+                // Add some random starting digits for effect
+                for(let j=0; j<5; j++) {
+                    digitsHtml += `<span class="digit h-[1.2em] leading-[1.2em]">${Math.floor(Math.random() * 10)}</span>`;
+                }
+                digitsHtml += `<span class="digit h-[1.2em] leading-[1.2em]">${targetDigit}</span>`;
+                
+                wrapper.innerHTML = digitsHtml;
+                el.appendChild(wrapper);
+            }
+        }
+
+        function triggerOdometer(el) {
+            const containers = el.querySelectorAll('.digit-container');
+            containers.forEach((container, idx) => {
+                const totalDigits = container.children.length;
+                const delay = idx * 100;
+                setTimeout(() => {
+                    container.style.transform = `translateY(-${(totalDigits - 1) * 1.2}em)`;
+                }, 50 + delay);
+            });
+        }
+
+        // Initialize Odometers
+        document.querySelectorAll('.odometer-wrapper').forEach(el => {
+            setupOdometer(el, el.getAttribute('data-val'));
+        });
+
+        // 3D Reveal and Animation Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    
+                    // Find and trigger odometer if exists within card
+                    const odometer = entry.target.querySelector('.odometer-wrapper');
+                    if (odometer) {
+                        setTimeout(() => triggerOdometer(odometer), 400); // Wait for card reveal
+                    } else if (entry.target.classList.contains('odometer-wrapper')) {
+                        triggerOdometer(entry.target);
+                    }
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-3d, .odometer-wrapper:not(.glass-card .odometer-wrapper)').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body></html>
