@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_URL } from '../config';
 
 function RegistrationForm({ eventId, onClose }) {
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ function RegistrationForm({ eventId, onClose }) {
     setError('');
     
     try {
-      const response = await fetch(`http://localhost:8000/api/events/${eventId}/register`, {
+      const response = await fetch(`${API_URL}/api/events/${eventId}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 function Resources() {
   const [documents, setDocuments] = useState([]);
@@ -9,8 +10,8 @@ function Resources() {
     const fetchData = async () => {
       try {
         const [docsRes, eventsRes] = await Promise.all([
-          fetch('http://localhost:8000/api/documents'),
-          fetch('http://localhost:8000/api/events')
+          fetch(`${API_URL}/api/documents`),
+          fetch(`${API_URL}/api/events`)
         ]);
         
         if (docsRes.ok) setDocuments(await docsRes.json());
@@ -60,7 +61,7 @@ function Resources() {
             return (
               <a 
                 key={doc.id}
-                href={`http://localhost:8000${doc.file_url}`} 
+                href={`${API_URL}${doc.file_url}`} 
                 target="_blank" 
                 rel="noreferrer"
                 className="bg-surface border border-surface-variant rounded-xl p-6 shadow-sm hover:shadow-md hover:border-primary/50 transition-all group flex flex-col h-full"

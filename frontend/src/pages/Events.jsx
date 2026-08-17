@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RegistrationForm from '../components/RegistrationForm';
+import { API_URL } from '../config';
 
 function Events() {
   const containerRef = useRef(null);
@@ -34,7 +35,7 @@ function Events() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/events');
+        const response = await fetch(`${API_URL}/api/events`);
         if (!response.ok) {
           throw new Error('Failed to fetch events');
         }

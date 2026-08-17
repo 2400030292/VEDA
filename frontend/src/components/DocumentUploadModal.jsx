@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 function DocumentUploadModal({ isOpen, onClose, onSave }) {
   const [events, setEvents] = useState([]);
@@ -18,7 +19,7 @@ function DocumentUploadModal({ isOpen, onClose, onSave }) {
       // Fetch events for the dropdown
       const fetchEvents = async () => {
         try {
-          const res = await fetch('http://localhost:8000/api/admin/events', {
+          const res = await fetch(`${API_URL}/api/admin/events`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           if (res.ok) {
@@ -72,7 +73,7 @@ function DocumentUploadModal({ isOpen, onClose, onSave }) {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/admin/documents/upload', {
+      const response = await fetch(`${API_URL}/api/admin/documents/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

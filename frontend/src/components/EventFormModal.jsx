@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 function EventFormModal({ isOpen, onClose, eventToEdit = null, onSave }) {
   const [formData, setFormData] = useState({
@@ -61,8 +62,8 @@ function EventFormModal({ isOpen, onClose, eventToEdit = null, onSave }) {
 
     const token = localStorage.getItem('adminToken');
     const url = eventToEdit 
-      ? `http://localhost:8000/api/admin/events/${eventToEdit.id}` 
-      : 'http://localhost:8000/api/admin/events';
+      ? `${API_URL}/api/admin/events/${eventToEdit.id}` 
+      : `${API_URL}/api/admin/events`;
     const method = eventToEdit ? 'PUT' : 'POST';
 
     // Format data: ensure capacity is an integer or null

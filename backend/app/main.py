@@ -5,16 +5,25 @@ from app.routers import auth, events, registrations, attendance, documents, stat
 
 app = FastAPI(title="College Club Event Management API")
 
+import os
+
+origins = [
+    "http://localhost:5173", 
+    "http://127.0.0.1:5173"
+]
+
+if os.getenv("ALLOWED_ORIGINS"):
+    origins.extend(os.getenv("ALLOWED_ORIGINS").split(","))
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"], 
+    allow_origins=origins, 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-import os
 os.makedirs("uploads", exist_ok=True)
 app.mount("/static/uploads", StaticFiles(directory="uploads"), name="uploads")
 

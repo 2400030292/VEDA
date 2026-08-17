@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EventFormModal from '../components/EventFormModal';
 import DocumentUploadModal from '../components/DocumentUploadModal';
+import { API_URL } from '../config';
 
 function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -21,15 +22,15 @@ function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const statsRes = await fetch('http://localhost:8000/api/admin/stats', {
+      const statsRes = await fetch(`${API_URL}/api/admin/stats`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
-      const eventsRes = await fetch('http://localhost:8000/api/admin/events', {
+      const eventsRes = await fetch(`${API_URL}/api/admin/events`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
-      const docsRes = await fetch('http://localhost:8000/api/admin/documents', {
+      const docsRes = await fetch(`${API_URL}/api/admin/documents`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -73,7 +74,7 @@ function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this event? This will permanently delete all registrations and attendance records associated with it!")) return;
     
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/events/${id}`, {
+      const res = await fetch(`${API_URL}/api/admin/events/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -91,7 +92,7 @@ function AdminDashboard() {
     if (!window.confirm("Are you sure you want to delete this document?")) return;
     
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/documents/${id}`, {
+      const res = await fetch(`${API_URL}/api/admin/documents/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -260,7 +261,7 @@ function AdminDashboard() {
                   return (
                     <tr key={doc.id} className="border-b border-surface-variant last:border-0 hover:bg-surface-container-lowest transition-colors">
                       <td className="p-4 font-body-md text-on-surface font-medium max-w-[200px] truncate" title={doc.file_name}>
-                        <a href={`http://localhost:8000${doc.file_url}`} target="_blank" rel="noreferrer" className="text-primary hover:underline flex items-center gap-1">
+                        <a href={`${API_URL}${doc.file_url}`} target="_blank" rel="noreferrer" className="text-primary hover:underline flex items-center gap-1">
                           <span className="material-symbols-outlined text-[16px]">description</span>
                           {doc.file_name}
                         </a>

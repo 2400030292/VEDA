@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 
 function Attendance() {
   const [events, setEvents] = useState([]);
@@ -23,7 +24,7 @@ function Attendance() {
 
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/admin/events', {
+        const response = await fetch(`${API_URL}/api/admin/events`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!response.ok) throw new Error("Failed to fetch events");
@@ -50,7 +51,7 @@ function Attendance() {
     const fetchRegistrations = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:8000/api/admin/events/${selectedEventId}/registrations`, {
+        const response = await fetch(`${API_URL}/api/admin/events/${selectedEventId}/registrations`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!response.ok) throw new Error("Failed to fetch registrations");
@@ -93,7 +94,7 @@ function Attendance() {
     setStatusMessage(null);
 
     try {
-      const response = await fetch(`http://localhost:8000/api/admin/events/${selectedEventId}/attendance/bulk`, {
+      const response = await fetch(`${API_URL}/api/admin/events/${selectedEventId}/attendance/bulk`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +123,7 @@ function Attendance() {
       // Re-fetch registrations to update locked status
       const fetchRegistrations = async () => {
         try {
-          const res = await fetch(`http://localhost:8000/api/admin/events/${selectedEventId}/registrations`, {
+          const res = await fetch(`${API_URL}/api/admin/events/${selectedEventId}/registrations`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           const data = await res.json();
