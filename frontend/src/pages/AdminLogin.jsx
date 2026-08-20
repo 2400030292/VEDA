@@ -32,7 +32,7 @@ function AdminLogin() {
       }
 
       const data = await response.json();
-      localStorage.setItem('adminToken', data.access_token);
+      sessionStorage.setItem('adminToken', data.access_token);
       navigate('/admin/dashboard');
     } catch (err) {
       setError(err.message);

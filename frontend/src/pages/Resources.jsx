@@ -61,7 +61,7 @@ function Resources() {
             return (
               <a 
                 key={doc.id}
-                href={`${API_URL}${doc.file_url}`} 
+                href={doc.file_url.startsWith('http') ? doc.file_url : `${API_URL}${doc.file_url}`} 
                 target="_blank" 
                 rel="noreferrer"
                 className="bg-surface border border-surface-variant rounded-xl p-6 shadow-sm hover:shadow-md hover:border-primary/50 transition-all group flex flex-col h-full"
@@ -69,7 +69,7 @@ function Resources() {
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center">
                     <span className="material-symbols-outlined text-[28px]">
-                      {doc.file_name.toLowerCase().endsWith('.pdf') ? 'picture_as_pdf' : 'description'}
+                      {doc.file_type === 'external/link' || doc.file_url.includes('drive.google') ? 'link' : (doc.file_name.toLowerCase().endsWith('.pdf') ? 'picture_as_pdf' : 'description')}
                     </span>
                   </div>
                   <span className="material-symbols-outlined text-tertiary group-hover:text-primary transition-colors">download</span>
@@ -88,7 +88,7 @@ function Resources() {
                   )}
                   <div className="flex items-center gap-2 text-tertiary font-label-sm uppercase tracking-wider text-xs">
                     <span className="material-symbols-outlined text-[16px]">sd_storage</span>
-                    <span>{formatBytes(doc.file_size)}</span>
+                    <span>{doc.file_type === 'external/link' ? 'External Link' : formatBytes(doc.file_size)}</span>
                   </div>
                 </div>
               </a>

@@ -18,7 +18,7 @@ function AdminDashboard() {
   
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('adminToken');
+  const token = sessionStorage.getItem('adminToken');
 
   const fetchData = async () => {
     try {
@@ -56,7 +56,7 @@ function AdminDashboard() {
   }, [token, navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
+    sessionStorage.removeItem('adminToken');
     navigate('/admin/login');
   };
 
@@ -171,12 +171,20 @@ function AdminDashboard() {
       <div className="mb-12">
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-headline-md text-headline-md font-bold text-on-surface">Event Management</h2>
-          <button 
-            onClick={handleCreateEvent}
-            className="bg-primary text-on-primary px-4 py-2 rounded font-label-md tracking-wider uppercase flex items-center gap-2 hover:bg-surface-tint cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-sm">add</span> New Event
-          </button>
+          <div className="flex gap-4">
+            <button 
+              onClick={() => navigate('/attendance')}
+              className="bg-surface-container-high text-on-surface px-4 py-2 rounded font-label-md tracking-wider uppercase flex items-center gap-2 hover:bg-surface-variant cursor-pointer border border-outline-variant"
+            >
+              <span className="material-symbols-outlined text-sm">how_to_reg</span> Manage Attendance
+            </button>
+            <button 
+              onClick={handleCreateEvent}
+              className="bg-primary text-on-primary px-4 py-2 rounded font-label-md tracking-wider uppercase flex items-center gap-2 hover:bg-surface-tint cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-sm">add</span> New Event
+            </button>
+          </div>
         </div>
 
         <div className="bg-surface border border-surface-variant rounded-xl overflow-hidden shadow-sm">
@@ -261,12 +269,12 @@ function AdminDashboard() {
                   return (
                     <tr key={doc.id} className="border-b border-surface-variant last:border-0 hover:bg-surface-container-lowest transition-colors">
                       <td className="p-4 font-body-md text-on-surface font-medium max-w-[200px] truncate" title={doc.file_name}>
-                        <a href={`${API_URL}${doc.file_url}`} target="_blank" rel="noreferrer" className="text-primary hover:underline flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[16px]">description</span>
+                        <a href={doc.file_url.startsWith('http') ? doc.file_url : `${API_URL}${doc.file_url}`} target="_blank" rel="noreferrer" className="text-primary hover:underline flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[16px]">{doc.file_type === 'external/link' || doc.file_url.includes('drive.google') ? 'link' : 'description'}</span>
                           {doc.file_name}
                         </a>
                       </td>
-                      <td className="p-4 font-body-md text-on-surface-variant">{formatBytes(doc.file_size)}</td>
+                      <td className="p-4 font-body-md text-on-surface-variant">{doc.file_type === 'external/link' ? 'External Link' : formatBytes(doc.file_size)}</td>
                       <td className="p-4">
                         <span className={`px-2 py-1 rounded text-xs font-label-md uppercase tracking-wider ${doc.visibility === 'PUBLIC' ? 'bg-secondary-container text-on-secondary-container' : 'bg-surface-container text-on-surface-variant'}`}>
                           {doc.visibility}

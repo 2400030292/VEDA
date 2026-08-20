@@ -1,7 +1,14 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 function TopNavBar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const token = sessionStorage.getItem('adminToken');
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('adminToken');
+    navigate('/login');
+  };
 
   const getLinkClass = (path) => {
     const baseClass = "h-full flex items-center transition-colors duration-200 cursor-pointer active:scale-95 font-label-md text-label-md uppercase tracking-wider";
@@ -25,8 +32,19 @@ function TopNavBar() {
           <Link to="/events" className={getLinkClass('/events')}>Events</Link>
           <Link to="/team" className={getLinkClass('/team')}>Team</Link>
           <Link to="/resources" className={getLinkClass('/resources')}>Resources</Link>
-          <Link to="/attendance" className={getLinkClass('/attendance')}>Attendance</Link>
-          <Link to="/login" className={getLinkClass('/login')}>Login</Link>
+          {!token ? (
+            <Link to="/login" className={getLinkClass('/login')}>Login</Link>
+          ) : (
+            <>
+              <Link to="/admin/dashboard" className={getLinkClass('/admin/dashboard')}>Dashboard</Link>
+              <button 
+                onClick={handleLogout}
+                className="h-full flex items-center transition-colors duration-200 cursor-pointer active:scale-95 font-label-md text-label-md uppercase tracking-wider text-error hover:text-error/80"
+              >
+                Logout
+              </button>
+            </>
+          )}
         </nav>
         <button className="hidden md:flex items-center justify-center bg-primary text-on-primary px-6 py-2 rounded font-label-md text-label-md uppercase tracking-wider hover:bg-surface-tint transition-colors cursor-pointer active:scale-95">
           Join Us

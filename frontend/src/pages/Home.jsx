@@ -1,9 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 
 function Home() {
   const containerRef = useRef(null);
   const statsRef = useRef(null);
+  const [events, setEvents] = useState([]);
 
   const scrollToStats = () => {
     if (statsRef.current) {
@@ -12,6 +14,19 @@ function Home() {
   };
 
   useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/events`);
+        if (response.ok) {
+          const data = await response.json();
+          setEvents(data.slice(0, 2)); // Show only top 2 events
+        }
+      } catch (err) {
+        console.error("Failed to fetch events", err);
+      }
+    };
+    fetchEvents();
+
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -72,13 +87,13 @@ function Home() {
   return (
     <div ref={containerRef}>
       {/* Hero Section */}
-      <section className="relative w-full h-[80vh] md:h-[90vh] bg-black flex flex-col items-center justify-center overflow-hidden reveal-3d">
+      <section className="relative w-full h-[65vh] md:h-[70vh] bg-black flex flex-col items-center justify-center overflow-hidden reveal-3d">
         <div className="absolute inset-0 w-full h-full opacity-40 mix-blend-screen z-0"></div>
-        <div className="relative z-10 flex flex-col items-center text-center px-4">
-          <img alt="VEDA Brand Logo" className="w-64 md:w-96 h-auto mb-8 drop-shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA30xgn-miSNAcNnZQm_dHGs6rbsjm8zYNyYUTTiNNjeB4Jechn8jUuBlRRoxpQHtzPqLrntzx4Z60TCQtqnQdKPMozXmUq_6VeOOkmvTK6Lds7gL6FUUdSvYpYz1p_Mewd9NXzTZaCXC2n32tkFeC0vWSMOTJP9N9uCbgpdyiPBxhxEB4NH4m2Vi5vjumdSaGj7IcTBR7bGlDDBL6xvXlASLvrIfx4AY9Uedvihju03xxoAj0YzL_hebtrOzIa4Px9UA"/>
+        <div className="relative z-10 flex flex-col items-center text-center px-4 mt-[-4vh] md:mt-[-6vh]">
+          <img alt="VEDA Brand Logo" className="w-40 md:w-56 h-auto mb-4 drop-shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA30xgn-miSNAcNnZQm_dHGs6rbsjm8zYNyYUTTiNNjeB4Jechn8jUuBlRRoxpQHtzPqLrntzx4Z60TCQtqnQdKPMozXmUq_6VeOOkmvTK6Lds7gL6FUUdSvYpYz1p_Mewd9NXzTZaCXC2n32tkFeC0vWSMOTJP9N9uCbgpdyiPBxhxEB4NH4m2Vi5vjumdSaGj7IcTBR7bGlDDBL6xvXlASLvrIfx4AY9Uedvihju03xxoAj0YzL_hebtrOzIa4Px9UA"/>
           
           <div className="font-headline-md text-headline-md text-on-primary font-bold flex flex-col items-center gap-2">
-            <h1 className="font-display-lg text-display-lg text-white font-bold mb-2">Pioneering the Future of Innovation</h1>
+            <h1 className="font-display-md text-display-md md:font-display-lg md:text-display-lg text-white font-bold mb-1">Pioneering the Future of Innovation</h1>
             <div className="animated-text-container">
               <ul className="animated-text-list">
                 <li className="text-primary-fixed">KL IRD</li>
@@ -89,20 +104,14 @@ function Home() {
             </div>
           </div>
           
-          <p className="mt-6 text-body-lg text-tertiary-fixed-dim max-w-2xl text-center mx-auto opacity-80">
+          <p className="mt-4 text-body-md md:text-body-lg text-tertiary-fixed-dim max-w-2xl text-center mx-auto opacity-80">
             Pioneering research, fostering innovation, and building the future of technology through collaborative exploration.
           </p>
-          <Link to="/events" className="mt-10 bg-transparent border-2 border-primary-fixed text-primary-fixed px-8 py-3 rounded-full font-label-md text-label-md uppercase tracking-widest hover:bg-primary-fixed hover:text-black transition-all duration-300">
+          <Link to="/events" className="relative z-50 mt-6 bg-transparent border-2 border-primary-fixed text-primary-fixed px-8 py-3 rounded-full font-label-md text-label-md uppercase tracking-widest hover:bg-primary-fixed hover:text-black transition-all duration-300">
             Discover More
           </Link>
         </div>
         
-        <div 
-          onClick={scrollToStats}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 animate-bounce cursor-pointer hover:text-white transition-colors p-2"
-        >
-          <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 0" }}>keyboard_arrow_down</span>
-        </div>
       </section>
 
       {/* Stats Bar */}
@@ -141,10 +150,10 @@ function Home() {
             <p className="font-body-lg text-body-lg text-on-surface-variant text-opacity-80">
               The Institutional Research and Development (IRD) cell is the central hub for technological advancement. We provide the resources, mentorship, and environment necessary for students to transition from theoretical learning to practical, impactful engineering solutions.
             </p>
-            <a className="inline-flex items-center gap-2 text-secondary font-label-md text-label-md uppercase tracking-wider hover:text-primary transition-colors group" href="#">
+            <Link to="/resources" className="inline-flex items-center gap-2 text-secondary font-label-md text-label-md uppercase tracking-wider hover:text-primary transition-colors group">
               Explore Our Facilities 
               <span className="material-symbols-outlined transform group-hover:translate-x-1 transition-transform" style={{ fontVariationSettings: "'FILL' 0" }}>arrow_forward</span>
-            </a>
+            </Link>
           </div>
           <div className="md:col-span-6 md:col-start-7 mt-12 md:mt-0 relative h-96 md:h-[500px] w-full rounded-xl overflow-hidden shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)]">
             <img alt="Modern university research laboratory" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLvDn9aNPw67nn03xwJVeF4v29mBWsaR3KbwXGaijgUE5pCOqvjUteUL-DJRQtd3KxRdYJMT7ZFTrOyesZLXJvP1WB3aNPvczgMEUhtA0k1Q6b7B8QOk-5NU9Tx3ZOQeNSol4ON87n_BcUuB-H87cWSWRK2wTZEykzIBm4YhXozrdt4Qp64cSeky6VLvFGUQqnJ1RrQ3TcigXl8aYJBRKbSlITuFBoB9ZPMQmfrkdDOa3EZCAuL0LDttCIs"/>
@@ -229,62 +238,50 @@ function Home() {
             <h2 className="font-headline-lg text-headline-lg text-on-surface font-bold">Upcoming Events</h2>
             <p className="font-body-lg text-body-lg text-on-surface-variant mt-2">Workshops, hackathons, and guest lectures.</p>
           </div>
-          <a className="hidden md:inline-flex items-center gap-1 text-primary font-label-md text-label-md uppercase tracking-wider hover:text-secondary transition-colors" href="/events">
+          <Link to="/events" className="hidden md:inline-flex items-center gap-1 text-primary font-label-md text-label-md uppercase tracking-wider hover:text-secondary transition-colors">
             All Events <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 0" }}>arrow_forward</span>
-          </a>
+          </Link>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Event 1 */}
-          <Link to="/events" className="group bg-surface rounded-lg p-6 border border-surface-variant hover:border-primary/50 transition-colors shadow-sm flex flex-col md:flex-row gap-6 items-start cursor-pointer">
-            <div className="bg-surface-container-low rounded p-4 text-center min-w-[80px] border border-surface-variant">
-              <span className="block font-headline-md text-headline-md text-primary font-bold">22</span>
-              <span className="block font-label-sm text-label-sm text-on-surface-variant uppercase">Aug</span>
-            </div>
-            <div className="w-full">
-              <div className="flex gap-2 mb-2">
-                <span className="px-2 py-1 bg-surface-container text-tertiary rounded text-[10px] font-label-md uppercase tracking-widest border border-outline-variant">Recruitment</span>
-                <span className="px-2 py-1 bg-black text-white rounded text-[10px] font-label-md uppercase tracking-widest">VEDA</span>
-              </div>
-              <h4 className="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">VEDA Core Recruitment</h4>
-              <p className="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">Join the central hub for VLSI & Embedded systems. Showcase your skills to become part of the core team.</p>
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-4 text-sm text-tertiary">
-                  <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 0" }}>schedule</span> 10:00 AM</span>
-                  <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 0" }}>location_on</span> C-Block, Lab 3</span>
+          {events.map((event) => {
+            const dateObj = new Date(event.event_date);
+            const day = event.event_date ? dateObj.getDate() : '--';
+            const monthStr = event.event_date ? dateObj.toLocaleString('default', { month: 'short' }) : 'TBD';
+            
+            return (
+              <Link key={event.id} to="/events" className="group bg-surface rounded-lg p-6 border border-surface-variant hover:border-primary/50 transition-colors shadow-sm flex flex-col md:flex-row gap-6 items-start cursor-pointer">
+                <div className="bg-surface-container-low rounded p-4 text-center min-w-[80px] border border-surface-variant">
+                  <span className="block font-headline-md text-headline-md text-primary font-bold">{day}</span>
+                  <span className="block font-label-sm text-label-sm text-on-surface-variant uppercase">{monthStr}</span>
                 </div>
-                <span className="text-primary font-label-sm font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform flex items-center gap-1">Register <span className="material-symbols-outlined text-sm">arrow_forward</span></span>
-              </div>
-            </div>
-          </Link>
-          
-          {/* Event 2 */}
-          <Link to="/events" className="group bg-surface rounded-lg p-6 border border-surface-variant hover:border-primary/50 transition-colors shadow-sm flex flex-col md:flex-row gap-6 items-start cursor-pointer">
-            <div className="bg-surface-container-low rounded p-4 text-center min-w-[80px] border border-surface-variant">
-              <span className="block font-headline-md text-headline-md text-primary font-bold">25</span>
-              <span className="block font-label-sm text-label-sm text-on-surface-variant uppercase">Aug</span>
-            </div>
-            <div className="w-full">
-              <div className="flex gap-2 mb-2">
-                <span className="px-2 py-1 bg-surface-container text-tertiary rounded text-[10px] font-label-md uppercase tracking-widest border border-outline-variant">Hackathon</span>
-                <span className="px-2 py-1 bg-black text-white rounded text-[10px] font-label-md uppercase tracking-widest">IoTRIX</span>
-              </div>
-              <h4 className="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">IoTRIX Smart Campus Hackathon</h4>
-              <p className="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">A 48-hour challenge to build connected solutions for a smarter, more sustainable university campus.</p>
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-4 text-sm text-tertiary">
-                  <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 0" }}>schedule</span> 9:00 AM</span>
-                  <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 0" }}>location_on</span> Main Auditorium</span>
+                <div className="w-full">
+                  <div className="flex gap-2 mb-2">
+                    <span className="px-2 py-1 bg-surface-container text-tertiary rounded text-[10px] font-label-md uppercase tracking-widest border border-outline-variant">{event.category || 'EVENT'}</span>
+                  </div>
+                  <h4 className="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">{event.title}</h4>
+                  <p className="font-body-md text-body-md text-on-surface-variant mb-4 line-clamp-2">{event.description}</p>
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-4 text-sm text-tertiary">
+                      <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 0" }}>schedule</span> {event.start_time ? event.start_time.substring(0,5) : 'TBA'}</span>
+                      <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 0" }}>location_on</span> {event.venue || 'TBA'}</span>
+                    </div>
+                    <span className="text-primary font-label-sm font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform flex items-center gap-1">Register <span className="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  </div>
                 </div>
-                <span className="text-primary font-label-sm font-bold uppercase tracking-wider group-hover:translate-x-1 transition-transform flex items-center gap-1">Register <span className="material-symbols-outlined text-sm">arrow_forward</span></span>
-              </div>
-            </div>
-          </Link>
+              </Link>
+            )
+          })}
+          {events.length === 0 && (
+             <div className="col-span-1 md:col-span-2 text-center py-12 text-on-surface-variant border border-surface-variant border-dashed rounded-lg">
+                Stay tuned for our upcoming research and hackathon events!
+             </div>
+          )}
         </div>
         
-        <a className="md:hidden mt-8 block text-center w-full bg-surface-container py-3 rounded text-primary font-label-md text-label-md uppercase tracking-wider" href="/events">
+        <Link to="/events" className="md:hidden mt-8 block text-center w-full bg-surface-container py-3 rounded text-primary font-label-md text-label-md uppercase tracking-wider">
           View All Events
-        </a>
+        </Link>
       </section>
 
       {/* Moments Section */}

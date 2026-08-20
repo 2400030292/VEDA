@@ -9,10 +9,15 @@ function DocumentUploadModal({ isOpen, onClose, onSave }) {
   });
   const [file, setFile] = useState(null);
   
+  // External link support
+  const [uploadType, setUploadType] = useState('file'); // 'file' or 'link'
+  const [linkUrl, setLinkUrl] = useState('');
+  const [linkName, setLinkName] = useState('');
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const token = localStorage.getItem('adminToken');
+  const token = sessionStorage.getItem('adminToken');
 
   useEffect(() => {
     if (isOpen) {
@@ -33,6 +38,9 @@ function DocumentUploadModal({ isOpen, onClose, onSave }) {
       
       // Reset form
       setFile(null);
+      setLinkUrl('');
+      setLinkName('');
+      setUploadType('file');
       setFormData({
         event_id: '',
         visibility: 'PRIVATE',
@@ -56,20 +64,32 @@ function DocumentUploadModal({ isOpen, onClose, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!file) {
+    setError('');
+
+    if (uploadType === 'file' && !file) {
       setError('Please select a file to upload.');
+      return;
+    }
+
+    if (uploadType === 'link' && (!linkUrl || !linkName)) {
+      setError('Please provide both a link URL and a document name.');
       return;
     }
     
     setLoading(true);
-    setError('');
 
     // Prepare multipart form data
     const uploadData = new FormData();
-    uploadData.append('file', file);
     uploadData.append('visibility', formData.visibility);
     if (formData.event_id) {
       uploadData.append('event_id', formData.event_id);
+    }
+    
+    if (uploadType === 'file') {
+      uploadData.append('file', file);
+    } else {
+      uploadData.append('external_url', linkUrl);
+      uploadData.append('file_name', linkName);
     }
 
     try {
@@ -116,15 +136,59 @@ function DocumentUploadModal({ isOpen, onClose, onSave }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           
-          <div>
-            <label className="block font-label-sm text-on-surface mb-1">Select File *</label>
-            <input 
-              required
-              type="file" 
-              onChange={handleFileChange}
-              className="w-full border border-outline-variant bg-surface-container-lowest p-2 rounded focus:outline-none focus:border-primary file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-container file:text-on-primary-container hover:file:bg-surface-tint"
-            />
+          <div className="flex gap-4 mb-4">
+            <button 
+              type="button" 
+              onClick={() => setUploadType('file')}
+              className={`flex-1 py-2 font-label-md rounded border transition-colors ${uploadType === 'file' ? 'bg-primary text-on-primary border-primary' : 'bg-surface text-on-surface border-surface-variant hover:bg-surface-container'}`}
+            >
+              Upload Local File
+            </button>
+            <button 
+              type="button" 
+              onClick={() => setUploadType('link')}
+              className={`flex-1 py-2 font-label-md rounded border transition-colors ${uploadType === 'link' ? 'bg-primary text-on-primary border-primary' : 'bg-surface text-on-surface border-surface-variant hover:bg-surface-container'}`}
+            >
+              Google Drive Link
+            </button>
           </div>
+
+          {uploadType === 'file' ? (
+            <div>
+              <label className="block font-label-sm text-on-surface mb-1">Select File *</label>
+              <input 
+                required
+                type="file" 
+                onChange={handleFileChange}
+                className="w-full border border-outline-variant bg-surface-container-lowest p-2 rounded focus:outline-none focus:border-primary file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-container file:text-on-primary-container hover:file:bg-surface-tint"
+              />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div>
+                <label className="block font-label-sm text-on-surface mb-1">Document Name *</label>
+                <input 
+                  required
+                  type="text" 
+                  value={linkName}
+                  onChange={(e) => setLinkName(e.target.value)}
+                  placeholder="e.g., Presentation Slides"
+                  className="w-full border border-outline-variant bg-surface-container-lowest p-2 rounded focus:outline-none focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="block font-label-sm text-on-surface mb-1">Link URL (Google Drive, etc.) *</label>
+                <input 
+                  required
+                  type="url" 
+                  value={linkUrl}
+                  onChange={(e) => setLinkUrl(e.target.value)}
+                  placeholder="https://drive.google.com/..."
+                  className="w-full border border-outline-variant bg-surface-container-lowest p-2 rounded focus:outline-none focus:border-primary"
+                />
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="block font-label-sm text-on-surface mb-1">Related Event (Optional)</label>

@@ -60,7 +60,7 @@ function EventFormModal({ isOpen, onClose, eventToEdit = null, onSave }) {
     setLoading(true);
     setError('');
 
-    const token = localStorage.getItem('adminToken');
+    const token = sessionStorage.getItem('adminToken');
     const url = eventToEdit 
       ? `${API_URL}/api/admin/events/${eventToEdit.id}` 
       : `${API_URL}/api/admin/events`;

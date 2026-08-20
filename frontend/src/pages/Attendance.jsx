@@ -12,9 +12,10 @@ function Attendance() {
   const [statusMessage, setStatusMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('adminToken');
+  const token = sessionStorage.getItem('adminToken');
 
   useEffect(() => {
     if (!token) {
@@ -59,6 +60,7 @@ function Attendance() {
         const data = await response.json();
         setRegistrations(data);
         setAbsentIds(new Set()); // Reset checkboxes when event changes
+        setIsEditing(false);
         setStatusMessage(null);
       } catch (err) {
         console.error(err);
@@ -80,6 +82,12 @@ function Attendance() {
       }
       return newSet;
     });
+  };
+
+  const handleEditAttendance = () => {
+    const absents = new Set(registrations.filter(r => r.attendance_status === 'ABSENT').map(r => r.id));
+    setAbsentIds(absents);
+    setIsEditing(true);
   };
 
   const handleBulkSubmit = async () => {
@@ -128,6 +136,7 @@ function Attendance() {
           });
           const data = await res.json();
           setRegistrations(data);
+          setIsEditing(false);
         } catch(e) {}
       };
       fetchRegistrations();
@@ -222,7 +231,7 @@ function Attendance() {
                       <td className="p-4 font-body-md text-on-surface font-medium">{reg.name}</td>
                       <td className="p-4 font-body-md text-on-surface-variant">{reg.email}</td>
                       <td className="p-4 text-center">
-                        {isSubmitted ? (
+                        {isSubmitted && !isEditing ? (
                           <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${reg.attendance_status === 'PRESENT' ? 'bg-secondary-container text-on-secondary-container' : reg.attendance_status === 'ABSENT' ? 'bg-error-container text-on-error-container' : 'bg-surface-variant text-on-surface-variant'}`}>
                             {reg.attendance_status || 'PENDING'}
                           </span>
@@ -248,23 +257,38 @@ function Attendance() {
               </table>
             </div>
 
-            {!isSubmitted && registrations.length > 0 && (
-              <div className="p-4 border-t border-surface-variant bg-surface-container-lowest flex justify-end">
+            {(!isSubmitted || isEditing) && registrations.length > 0 && (
+              <div className="p-4 border-t border-surface-variant bg-surface-container-lowest flex justify-end items-center">
+                {isEditing && (
+                   <button 
+                     onClick={() => setIsEditing(false)}
+                     className="text-on-surface-variant font-label-md mr-6 hover:text-on-surface cursor-pointer"
+                   >
+                     Cancel
+                   </button>
+                )}
                 <button 
                   onClick={handleBulkSubmit}
                   disabled={submitting}
-                  className="bg-primary text-on-primary px-6 py-2 rounded font-label-md tracking-wider uppercase hover:bg-surface-tint disabled:opacity-50 transition-colors flex items-center gap-2"
+                  className="bg-primary text-on-primary px-6 py-2 rounded font-label-md tracking-wider uppercase hover:bg-surface-tint disabled:opacity-50 transition-colors flex items-center gap-2 cursor-pointer"
                 >
-                  {submitting ? 'Processing...' : `Submit Attendance`}
+                  {submitting ? 'Processing...' : (isEditing ? 'Save Changes' : 'Submit Attendance')}
                 </button>
               </div>
             )}
-            {isSubmitted && (
-              <div className="p-4 border-t border-surface-variant bg-surface-container-lowest flex justify-center">
+            {isSubmitted && !isEditing && (
+              <div className="p-4 border-t border-surface-variant bg-surface-container-lowest flex justify-between items-center">
                 <p className="text-secondary font-medium flex items-center gap-2">
                   <span className="material-symbols-outlined">verified</span>
                   Attendance Posted
                 </p>
+                <button
+                  onClick={handleEditAttendance}
+                  className="bg-surface-container-high border border-outline-variant text-on-surface px-4 py-2 rounded font-label-md tracking-wider flex items-center gap-2 hover:bg-surface-variant transition-colors cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-[18px]">edit</span>
+                  Edit Attendance
+                </button>
               </div>
             )}
           </>

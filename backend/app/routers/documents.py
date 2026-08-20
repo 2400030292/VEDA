@@ -34,35 +34,55 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @admin_router.post("/upload", response_model=DocumentResponse)
 def upload_document(
-    file: UploadFile = File(...),
+    file: Optional[UploadFile] = File(None),
+    external_url: Optional[str] = Form(None),
+    file_name: Optional[str] = Form(None),
     event_id: Optional[int] = Form(None),
     visibility: str = Form("PRIVATE"),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin)
 ):
     """
-    Upload a new document (e.g., event poster, pdf material).
+    Upload a new document (e.g., event poster, pdf material) or external link.
     """
-    file_ext = os.path.splitext(file.filename)[1]
-    unique_filename = f"{uuid.uuid4().hex}{file_ext}"
-    file_path = os.path.join(UPLOAD_DIR, unique_filename)
-    
-    # Save file
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    if not file and not external_url:
+        raise HTTPException(status_code=400, detail="Must provide either a file or an external URL")
         
-    file_size = os.path.getsize(file_path)
-    file_url = f"/static/uploads/{unique_filename}"  # assuming we mount static route in main.py
-    
-    new_doc = Document(
-        event_id=event_id,
-        file_name=file.filename,
-        file_url=file_url,
-        file_type=file.content_type,
-        file_size=file_size,
-        visibility=visibility,
-        uploaded_by=current_admin.id
-    )
+    if external_url:
+        if not file_name:
+            raise HTTPException(status_code=400, detail="File name is required for external URLs")
+            
+        new_doc = Document(
+            event_id=event_id,
+            file_name=file_name,
+            file_url=external_url,
+            file_type="external/link",
+            file_size=0,
+            visibility=visibility,
+            uploaded_by=current_admin.id
+        )
+    else:
+        file_ext = os.path.splitext(file.filename)[1]
+        unique_filename = f"{uuid.uuid4().hex}{file_ext}"
+        file_path = os.path.join(UPLOAD_DIR, unique_filename)
+        
+        # Save file
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        file_size = os.path.getsize(file_path)
+        file_url = f"/static/uploads/{unique_filename}"  # assuming we mount static route in main.py
+        
+        new_doc = Document(
+            event_id=event_id,
+            file_name=file.filename,
+            file_url=file_url,
+            file_type=file.content_type,
+            file_size=file_size,
+            visibility=visibility,
+            uploaded_by=current_admin.id
+        )
+
     
     db.add(new_doc)
     db.commit()
@@ -91,11 +111,12 @@ def delete_document(
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
         
-    # Attempt to delete local file
-    filename = doc.file_url.split("/")[-1]
-    file_path = os.path.join(UPLOAD_DIR, filename)
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    # Attempt to delete local file if not external link
+    if doc.file_type != "external/link":
+        filename = doc.file_url.split("/")[-1]
+        file_path = os.path.join(UPLOAD_DIR, filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
         
     db.delete(doc)
     db.commit()

@@ -34,7 +34,7 @@ def mark_bulk_attendance(
     
     # Existing attendance to avoid duplicates
     existing_attendance = db.query(Attendance).filter(Attendance.event_id == event_id).all()
-    existing_reg_ids = {att.registration_id for att in existing_attendance}
+    existing_attendance_map = {att.registration_id: att for att in existing_attendance}
     
     present_count = 0
     absent_count = len(bulk_data.absent_registration_ids)
@@ -42,8 +42,13 @@ def mark_bulk_attendance(
     new_attendances = []
     
     for reg in all_registrations:
-        if reg.id not in existing_reg_ids:
-            status_val = "ABSENT" if reg.id in bulk_data.absent_registration_ids else "PRESENT"
+        status_val = "ABSENT" if reg.id in bulk_data.absent_registration_ids else "PRESENT"
+        if status_val == "PRESENT":
+            present_count += 1
+            
+        if reg.id in existing_attendance_map:
+            existing_attendance_map[reg.id].status = status_val
+        else:
             new_att = Attendance(
                 event_id=event_id,
                 registration_id=reg.id,
@@ -51,12 +56,11 @@ def mark_bulk_attendance(
                 status=status_val
             )
             new_attendances.append(new_att)
-            if status_val == "PRESENT":
-                present_count += 1
             
     if new_attendances:
         db.add_all(new_attendances)
-        db.commit()
+        
+    db.commit()
         
     return {
         "message": "Bulk attendance processed successfully",

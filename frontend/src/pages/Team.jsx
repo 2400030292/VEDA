@@ -20,7 +20,7 @@ function Team() {
 
     const revealElements = document.querySelectorAll('.reveal-3d');
     revealElements.forEach(el => observer.observe(el));
-    
+
     return () => observer.disconnect();
   }, []);
 
@@ -45,7 +45,7 @@ function Team() {
 
         {/* Directory Grid */}
         <div className="space-y-24">
-          
+
           {/* ZERO ORDER */}
           <section className="scroll-mt-32" id="zero-order">
             <h2 className="font-headline-md text-3xl font-bold mb-10 border-b-2 border-secondary pb-4 flex items-center gap-3 text-secondary">
@@ -54,7 +54,7 @@ function Team() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               <div className="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
-                <div className="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Seelam Manish Ratan</div>
+                <div className="font-body-md text-lg text-secondary font-bold mb-3 blur-reveal">Seelam Monish Ratan</div>
                 <div className="font-label-md text-primary font-medium">2000030018</div>
               </div>
               <div className="glass-card rounded-xl p-6 reveal-3d border-l-4 border-l-primary hover:-translate-y-1 transition-transform">
