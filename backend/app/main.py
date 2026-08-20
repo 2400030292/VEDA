@@ -9,7 +9,8 @@ import os
 
 origins = [
     "http://localhost:5173", 
-    "http://127.0.0.1:5173"
+    "http://127.0.0.1:5173",
+    "https://kl-veda.vercel.app"
 ]
 
 if os.getenv("ALLOWED_ORIGINS"):
