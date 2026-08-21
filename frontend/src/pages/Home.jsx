@@ -299,7 +299,7 @@ function Home() {
               <img alt="Lab Work Moment 1" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="/club-1.JPG" />
             </div>
             <div className="marquee-item aspect-video rounded-xl overflow-hidden shadow-sm">
-              <img alt="Lab Work Moment 2" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="/club-2.JPG" />
+              <img alt="Lab Work Moment 2" className="w-full h-full object-cover object-[center_30%] hover:scale-110 transition-transform duration-700" src="/club-2.JPG" />
             </div>
             <div className="marquee-item aspect-video rounded-xl overflow-hidden shadow-sm">
               <img alt="Lab Work Moment 3" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="/club-3.JPG" />
@@ -312,7 +312,7 @@ function Home() {
               <img alt="Lab Work Moment 1" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="/club-1.JPG" />
             </div>
             <div className="marquee-item aspect-video rounded-xl overflow-hidden shadow-sm">
-              <img alt="Lab Work Moment 2" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="/club-2.JPG" />
+              <img alt="Lab Work Moment 2" className="w-full h-full object-cover object-[center_30%] hover:scale-110 transition-transform duration-700" src="/club-2.JPG" />
             </div>
             <div className="marquee-item aspect-video rounded-xl overflow-hidden shadow-sm">
               <img alt="Lab Work Moment 3" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="/club-3.JPG" />
