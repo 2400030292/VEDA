@@ -1,6 +1,23 @@
 import { Link } from 'react-router-dom';
 
 function Footer() {
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'KL IRD - VEDA Club',
+          text: 'Check out the official VEDA Club Event Management Platform at KL University!',
+          url: window.location.origin,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.origin);
+        alert('Website link copied to clipboard!');
+      }
+    } catch (error) {
+      console.log('Error sharing:', error);
+    }
+  };
+
   return (
     <footer className="w-full mt-auto bg-surface-container-low py-20 border-t border-surface-variant">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
@@ -11,9 +28,13 @@ function Footer() {
             Institutional Research and Development Cell. Empowering innovation and technical excellence.
           </p>
           <div className="flex gap-4 mt-2">
-            <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-tertiary hover:bg-primary hover:text-white transition-colors cursor-pointer">
+            <button 
+              onClick={handleShare}
+              className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-tertiary hover:bg-primary hover:text-white transition-colors cursor-pointer outline-none"
+              title="Share Website"
+            >
               <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>share</span>
-            </div>
+            </button>
             <a href="mailto:ird@kluniversity.in?subject=Inquiry%20to%20KL%20IRD" className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-tertiary hover:bg-primary hover:text-white transition-colors cursor-pointer">
               <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>mail</span>
             </a>
