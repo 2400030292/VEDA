@@ -85,7 +85,7 @@ body {
 .marquee-container {
   display: flex;
   width: fit-content;
-  animation: marquee 20s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 .marquee-wrapper {
   overflow: hidden;
@@ -96,12 +96,12 @@ body {
   animation-play-state: paused;
 }
 .marquee-item {
-  flex: 0 0 300px;
+  flex: 0 0 350px;
   margin-right: 16px;
 }
 @media (min-width: 768px) {
   .marquee-item {
-      flex: 0 0 400px;
+      flex: 0 0 600px;
   }
 }
 
