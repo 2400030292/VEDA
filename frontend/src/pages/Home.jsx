@@ -296,7 +296,7 @@ function Home() {
           <div className="marquee-container flex">
             {/* Set 1 */}
             <div className="marquee-item aspect-square rounded-xl overflow-hidden shadow-sm">
-              <img alt="Lab Work Moment" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="https://drive.google.com/file/d/1zMHrffbNhTjhwghVVZf2vjNK0GyChY-h/view?usp=sharing" />
+              <img alt="Lab Work Moment" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="/club-1.jpg" />
             </div>
             <div className="marquee-item aspect-square rounded-xl overflow-hidden shadow-sm">
               <img alt="Lab Work Moment" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWra7o7JWN5fD4A9hvZyUCAOVmQnU1oPV2QEEvvfQ_m9JNoGBfxqN93RVtqiBX8HogiBQemU1S_iH1c8TQpAdq8MsHzvXV2SNNdr6suXOuvD27wVVcG0Qj7iArfEjTezgKW9C2dVXDwMqu8Q05vNgVvh9K8hf_BdRxkgJsayIP6YRlmkt9INuwFEr3S8JAaSxw8I61iS-rS3mqvvv20LR6lEyQ39LxGfGd7WKXo4qkrn6biFyY3ZkpwgNrVMZ2HwySKA" />
@@ -309,7 +309,7 @@ function Home() {
             </div>
             {/* Set 2 for infinite loop */}
             <div className="marquee-item aspect-square rounded-xl overflow-hidden shadow-sm">
-              <img alt="Lab Work Moment" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AP1WRLvDn9aNPw67nn03xwJVeF4v29mBWsaR3KbwXGaijgUE5pCOqvjUteUL-DJRQtd3KxRdYJMT7ZFTrOyesZLXJvP1WB3aNPvczgMEUhtA0k1Q6b7B8QOk-5NU9Tx3ZOQeNSol4ON87n_BcUuB-H87cWSWRK2wTZEykzIBm4YhXozrdt4Qp64cSeky6VLvFGUQqnJ1RrQ3TcigXl8aYJBRKbSlITuFBoB9ZPMQmfrkdDOa3EZCAuL0LDttCIs" />
+              <img alt="Lab Work Moment" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="https://drive.google.com/uc?id=1zMHrffbNhTjhwghVVZf2vjNK0GyChY-h" />
             </div>
             <div className="marquee-item aspect-square rounded-xl overflow-hidden shadow-sm">
               <img alt="Lab Work Moment" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWra7o7JWN5fD4A9hvZyUCAOVmQnU1oPV2QEEvvfQ_m9JNoGBfxqN93RVtqiBX8HogiBQemU1S_iH1c8TQpAdq8MsHzvXV2SNNdr6suXOuvD27wVVcG0Qj7iArfEjTezgKW9C2dVXDwMqu8Q05vNgVvh9K8hf_BdRxkgJsayIP6YRlmkt9INuwFEr3S8JAaSxw8I61iS-rS3mqvvv20LR6lEyQ39LxGfGd7WKXo4qkrn6biFyY3ZkpwgNrVMZ2HwySKA" />
