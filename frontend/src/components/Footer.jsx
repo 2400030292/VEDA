@@ -14,9 +14,9 @@ function Footer() {
             <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-tertiary hover:bg-primary hover:text-white transition-colors cursor-pointer">
               <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>share</span>
             </div>
-            <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-tertiary hover:bg-primary hover:text-white transition-colors cursor-pointer">
+            <a href="mailto:ird@kluniversity.in?subject=Inquiry%20to%20KL%20IRD" className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-tertiary hover:bg-primary hover:text-white transition-colors cursor-pointer">
               <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>mail</span>
-            </div>
+            </a>
           </div>
         </div>
         
@@ -49,9 +49,11 @@ function Footer() {
               <span className="material-symbols-outlined text-tertiary mt-0.5" style={{ fontVariationSettings: "'FILL' 0" }}>location_on</span>
               <span>KL University Campus,<br/>Vaddeswaram, AP</span>
             </li>
-            <li className="flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-all cursor-pointer">
-              <span className="material-symbols-outlined text-tertiary" style={{ fontVariationSettings: "'FILL' 0" }}>email</span>
-              <span>ird@kluniversity.in</span>
+            <li>
+              <a href="mailto:ird@kluniversity.in?subject=Inquiry%20to%20KL%20IRD" className="flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-all cursor-pointer">
+                <span className="material-symbols-outlined text-tertiary" style={{ fontVariationSettings: "'FILL' 0" }}>email</span>
+                <span>ird@kluniversity.in</span>
+              </a>
             </li>
           </ul>
         </div>
