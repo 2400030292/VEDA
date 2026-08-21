@@ -7,6 +7,10 @@ app = FastAPI(title="College Club Event Management API")
 
 import os
 
+from fastapi.responses import JSONResponse
+from fastapi import Request
+import traceback
+
 origins = [
     "http://localhost:5173", 
     "http://127.0.0.1:5173",
@@ -19,11 +23,22 @@ if os.getenv("ALLOWED_ORIGINS"):
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins, 
+    allow_origins=origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    print(f"FATAL ERROR: {exc}")
+    print(traceback.format_exc())
+    return JSONResponse(
+        status_code=500,
+        content={"detail": f"Internal Server Error: {str(exc)}"},
+        headers={"Access-Control-Allow-Origin": request.headers.get("origin", "*"), "Access-Control-Allow-Credentials": "true"}
+    )
 
 os.makedirs("uploads", exist_ok=True)
 app.mount("/static/uploads", StaticFiles(directory="uploads"), name="uploads")
