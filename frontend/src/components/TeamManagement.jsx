@@ -56,7 +56,8 @@ export default function TeamManagement({ token }) {
         setIsDomainModalOpen(false);
         fetchTeam();
       } else {
-        alert("Failed to save domain.");
+        const errData = await res.json();
+        alert(`Failed to save domain: ${errData.detail || 'Unknown error'}`);
       }
     } catch (err) {
       console.error(err);
@@ -92,7 +93,8 @@ export default function TeamManagement({ token }) {
         setIsMemberModalOpen(false);
         fetchTeam();
       } else {
-        alert("Failed to save member.");
+        const errData = await res.json();
+        alert(`Failed to save member: ${errData.detail || 'Unknown error'}`);
       }
     } catch (err) {
       console.error(err);
@@ -222,9 +224,9 @@ export default function TeamManagement({ token }) {
                 <input required type="text" value={domainForm.name} onChange={(e) => setDomainForm({...domainForm, name: e.target.value})} className="w-full p-3 bg-surface border border-outline rounded text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="e.g. ZERO ORDER" />
               </div>
               <div>
-                <label className="block text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-2">Sort Order</label>
-                <input type="number" value={domainForm.order} onChange={(e) => setDomainForm({...domainForm, order: parseInt(e.target.value) || 0})} className="w-full p-3 bg-surface border border-outline rounded text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="0" />
-                <p className="text-xs text-on-surface-variant mt-1">Lower numbers appear first.</p>
+                <label className="block text-label-md font-label-md text-on-surface-variant uppercase tracking-wider mb-2">Display Order</label>
+                <input type="number" value={domainForm.order} onChange={(e) => setDomainForm({...domainForm, order: parseInt(e.target.value) || 0})} className="w-full p-3 bg-surface border border-outline rounded text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="1" />
+                <p className="text-xs text-on-surface-variant mt-1">Controls which domain appears first on the public Team page (e.g., 1 is first, 2 is second).</p>
               </div>
               <div className="pt-4 flex justify-end gap-3">
                 <button type="button" onClick={() => setIsDomainModalOpen(false)} className="px-6 py-2 text-on-surface-variant hover:bg-surface-variant rounded font-label-md uppercase tracking-wider transition-colors">Cancel</button>

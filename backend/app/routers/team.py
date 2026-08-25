@@ -34,7 +34,8 @@ def create_domain(domain: team_schemas.DomainCreate, db: Session = Depends(get_d
         return db_domain
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=400, detail="Domain already exists or invalid data.")
+        print(f"Error creating domain: {e}")
+        raise HTTPException(status_code=400, detail=f"Domain creation failed: {str(e)}")
 
 @admin_router.put("/domains/{domain_id}", response_model=team_schemas.Domain)
 def update_domain(domain_id: str, domain_update: team_schemas.DomainUpdate, db: Session = Depends(get_db), admin=Depends(get_current_admin)):
