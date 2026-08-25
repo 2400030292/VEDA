@@ -22,10 +22,10 @@ export default function TeamManagement({ token }) {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
-        const data = await fetch(`${API_URL}/api/team`); // Using public route to get nested members easily
-        if(data.ok) {
-           setDomains(await data.json());
-        }
+        const data = await res.json();
+        setDomains(data);
+      } else {
+        console.error("Failed to fetch domains from admin route");
       }
     } catch (err) {
       console.error(err);
