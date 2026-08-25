@@ -5,23 +5,33 @@ function Team() {
   const containerRef = useRef(null);
   const [domains, setDomains] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     // Fetch dynamic team data
     fetch(`${API_URL}/api/team`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch team data");
+        return res.json();
+      })
       .then(data => {
-        setDomains(data);
+        if (Array.isArray(data)) {
+          setDomains(data);
+        } else {
+          setDomains([]);
+        }
         setLoading(false);
       })
       .catch(err => {
-        console.error(err);
+        console.error("Team fetch error:", err);
+        setError("Could not load team data. Please try again later.");
+        setDomains([]);
         setLoading(false);
       });
   }, []);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || domains.length === 0) return;
 
     const observerOptions = {
       root: null,
@@ -44,28 +54,34 @@ function Team() {
   }, [loading, domains]);
 
   // Helper function to create an anchor ID from a domain name
-  const toAnchorId = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const toAnchorId = (name) => name?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'section';
   
   // Array of material icons to cycle through for domains if we want variety
   const iconList = ['stars', 'menu_book', 'science', 'psychology', 'rocket_launch', 'lightbulb'];
 
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>;
-  }
-
   return (
     <div ref={containerRef}>
-      {/* Header Section */}
+      {/* Header Section (Loads Immediately) */}
       <header className="circuit-bg text-on-primary py-24 px-margin-mobile md:px-margin-desktop relative overflow-hidden">
         <div className="max-w-container-max mx-auto relative z-10 text-center">
-          <h1 className="font-display-lg text-5xl md:text-6xl font-bold mb-6 reveal-3d">VEDA TEAM 2026-2027</h1>
-          <p className="font-body-lg text-xl md:text-2xl text-tertiary-fixed-dim max-w-3xl mx-auto reveal-3d" style={{ transitionDelay: '0.1s' }}>KL IRD — Integrated Research and Discovery</p>
+          <h1 className="font-display-lg text-5xl md:text-6xl font-bold mb-6 reveal-3d is-visible">VEDA TEAM 2026-2027</h1>
+          <p className="font-body-lg text-xl md:text-2xl text-tertiary-fixed-dim max-w-3xl mx-auto reveal-3d is-visible" style={{ transitionDelay: '0.1s' }}>KL IRD — Integrated Research and Discovery</p>
         </div>
       </header>
 
       {/* Main Content */}
       <div className="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-[50vh]">
-        {domains.length === 0 ? (
+        
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <p className="text-on-surface-variant font-body-md animate-pulse">Loading team roster...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center text-error font-body-lg py-12 bg-error-container/20 rounded-xl">
+            {error}
+          </div>
+        ) : domains.length === 0 ? (
           <div className="text-center text-on-surface-variant font-body-lg py-12">
             Team roster is currently being updated. Check back later!
           </div>
