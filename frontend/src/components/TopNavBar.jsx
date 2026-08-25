@@ -22,8 +22,8 @@ function TopNavBar() {
     <header className="w-full top-0 sticky z-50 bg-surface border-b border-outline-variant shadow-sm transition-all duration-300">
       <div className="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <div className="flex items-center gap-2">
-          <Link to="/" className="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
-            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>biotech</span>
+          <Link to="/" className="font-headline-md text-headline-md font-bold text-primary flex items-center gap-3">
+            <img src="/veda-logo.png" alt="VEDA Logo" className="h-10 md:h-14 w-auto object-contain" />
             KL IRD
           </Link>
         </div>

@@ -7,6 +7,7 @@ function AdminLogin() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -73,14 +74,26 @@ function AdminLogin() {
           </div>
           <div>
             <label className="block font-label-sm text-on-surface mb-1 uppercase tracking-wider">Password</label>
-            <input 
-              type="password" 
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-outline-variant bg-surface-container-lowest p-3 rounded focus:outline-none focus:border-primary transition-colors"
-              placeholder="••••••••"
-            />
+            <div className="relative">
+              <input 
+                type={showPassword ? "text" : "password"} 
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-outline-variant bg-surface-container-lowest p-3 pr-12 rounded focus:outline-none focus:border-primary transition-colors"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface focus:outline-none flex items-center justify-center p-1 rounded-full hover:bg-surface-variant transition-colors"
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                <span className="material-symbols-outlined text-xl">
+                  {showPassword ? "visibility_off" : "visibility"}
+                </span>
+              </button>
+            </div>
           </div>
           <button 
             type="submit" 

@@ -1,9 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from app.routers import auth, events, registrations, attendance, documents, stats
+from app.routers import auth, events, registrations, attendance, documents, stats, team
+from app.core.database import engine
+from app.models import Base
 
 app = FastAPI(title="College Club Event Management API")
+
+# Auto-create tables (will create new team tables)
+Base.metadata.create_all(bind=engine)
+
 
 import os
 
@@ -52,6 +58,8 @@ app.include_router(attendance.router)
 app.include_router(documents.admin_router)
 app.include_router(documents.public_router)
 app.include_router(stats.router)
+app.include_router(team.admin_router)
+app.include_router(team.public_router)
 
 @app.get("/")
 def read_root():

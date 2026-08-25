@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EventFormModal from '../components/EventFormModal';
 import DocumentUploadModal from '../components/DocumentUploadModal';
+import TeamManagement from '../components/TeamManagement';
 import { API_URL } from '../config';
 
 function AdminDashboard() {
@@ -304,6 +305,9 @@ function AdminDashboard() {
           </div>
         </div>
       </div>
+      
+      {/* Team Management */}
+      <TeamManagement token={token} />
       
       <EventFormModal 
         isOpen={isEventModalOpen}

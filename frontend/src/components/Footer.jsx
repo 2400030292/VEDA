@@ -19,7 +19,7 @@ function Footer() {
   };
 
   return (
-    <footer className="w-full mt-auto bg-surface-container-low py-20 border-t border-surface-variant">
+    <footer className="w-full mt-auto bg-surface-container-low pt-20 pb-10 border-t border-surface-variant">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         {/* Brand */}
         <div className="flex flex-col gap-4">

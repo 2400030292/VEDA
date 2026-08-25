@@ -4,3 +4,4 @@ from app.models.event import Event
 from app.models.registration import Registration
 from app.models.attendance import Attendance
 from app.models.document import Document
+from app.models.team import Domain, Member
